@@ -1,78 +1,175 @@
+/* eslint-disable no-unused-vars */
 import React from "react";
+import { skills } from "../data/skills";
+import { motion } from "framer-motion";
+import { FaHeartbeat, FaUserNurse, FaBriefcaseMedical, FaStethoscope, FaSyringe, FaTrophy } from "react-icons/fa";
 
-export default function Skills() {
-  const clinicalSkills = [
-    "Patient Assessment",
-    "Vital Signs Monitoring",
-    "Triage Support",
-    "Early Warning Scoring",
-    "IV Therapy & Fluid Management",
-    "NG Tube Feeding",
-    "Catheter Care",
-    "Wound Dressing",
-    "Medication Administration",
-    "Dose Calculation",
-    "Infection Prevention",
-    "Aseptic Technique",
-    "Monitoring Renal, Cardiac, Gastroenteric Cases",
-    "BLS Certified"
-  ];
+const Skills = () => {
 
-  const professionalSkills = [
-    "Teamwork & Collaboration",
-    "Effective Communication",
-    "Multitasking",
-    "Time Management",
-    "Prioritization & Adaptability",
-    "Problem-Solving",
-    "Critical Thinking",
-    "Quick Decision-Making",
-    "Stress Management",
-    "Patient & Family Support",
-    "Responsibility"
-  ];
+  const skillLevelMap = {
+    "Advanced": 95,
+    "Proficient": 85,
+    "Intermediate": 70,
+    "Beginner": 50
+  };
+
+  const getSkillLevel = (skillName) => {
+    // Default to proficient level (85%)
+    return skillLevelMap["Proficient"] || 85;
+  };
+
+  const getRandomColor = (index) => {
+    const colors = [
+      "from-primary to-primary-600",
+      "from-secondary to-secondary-600",
+      "from-accent to-accent-600",
+    ];
+    return colors[index % colors.length];
+  };
+
+  const skillVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: (i) => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        delay: i * 0.1,
+        duration: 0.5,
+      },
+    }),
+  };
+
+  const renderSkill = (skill, index) => {
+    const skillLevel = getSkillLevel(skill);
+    const gradientColor = getRandomColor(index);
+
+    return (
+      <motion.div
+        key={skill}
+        className="mb-6"
+        custom={index}
+        variants={skillVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+      >
+        <div className="flex items-center space-x-3 mb-2">
+          <div className="p-2 bg-primary-50 rounded-lg">
+            <FaHeartbeat className="text-primary text-lg" />
+          </div>
+          <span className="font-medium text-gray-800 flex-1">{skill}</span>
+          <span className="text-sm font-semibold text-primary">{skillLevel}%</span>
+        </div>
+        <div className="w-full bg-gray-200 h-3 rounded-full overflow-hidden shadow-sm">
+          <motion.div
+            className={`bg-gradient-to-r ${gradientColor} h-3 rounded-full`}
+            initial={{ width: 0 }}
+            whileInView={{ width: `${skillLevel}%` }}
+            transition={{ duration: 1.2, ease: "easeOut" }}
+            viewport={{ once: true }}
+          />
+        </div>
+      </motion.div>
+    );
+  };
 
   return (
-    <section className="section bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 relative overflow-hidden">
-      <div className="absolute bottom-20 left-10 w-72 h-72 bg-blue-300/20 rounded-full blur-3xl"></div>
-      
-      <div className="max-w-6xl mx-auto relative z-10">
-        <h2 className="section-title text-center fade-in">Professional Skills</h2>
+    <section id="skills" className="py-20 bg-white text-gray-900 relative overflow-hidden">
+      {/* Background Decoration */}
+      <div className="absolute top-0 right-0 w-96 h-96 bg-primary-100 rounded-full blur-3xl opacity-10 -z-10"></div>
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-secondary-100 rounded-full blur-3xl opacity-10 -z-10"></div>
 
-        {/* Clinical Skills */}
-        <div className="mb-16 fade-in fade-in-delay-1">
-          <div className="flex items-center mb-10">
-            <div className="icon-box mr-4">
-              <i className="fas fa-heartbeat"></i>
-            </div>
-            <h3 className="text-3xl font-bold text-[var(--color-navy)]">Clinical Skills</h3>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {clinicalSkills.map((skill, index) => (
-              <div key={index} className="glass card rounded-2xl p-5 text-center text-white font-semibold text-sm md:text-base hover-glow">
-                <i className="fas fa-check text-pink-400 mr-2"></i>{skill}
+      <div className="container mx-auto px-4 max-w-6xl">
+        
+        {/* Section Header */}
+        <motion.div
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: -30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+        >
+          <h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-4">
+            My <span className="text-primary">Skills</span> & Expertise
+          </h2>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Comprehensive nursing expertise with a blend of clinical proficiency and professional excellence
+          </p>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-12">
+          {/* Clinical Skills */}
+          <motion.div
+            className="bg-gradient-to-br from-white to-primary-50 rounded-2xl p-8 shadow-lg border border-primary-100"
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <div className="flex items-center mb-8">
+              <div className="p-3 bg-primary-100 rounded-lg mr-4">
+                <FaBriefcaseMedical className="text-primary text-2xl" />
               </div>
-            ))}
-          </div>
+              <div>
+                <h3 className="text-2xl font-bold text-gray-900">Clinical Skills</h3>
+                <p className="text-sm text-gray-600">Specialized healthcare expertise</p>
+              </div>
+            </div>
+            <div className="space-y-1">
+              {skills.clinical.map((skill, idx) => renderSkill(skill, idx))}
+            </div>
+          </motion.div>
+
+          {/* Professional Skills */}
+          <motion.div
+            className="bg-gradient-to-br from-white to-secondary-50 rounded-2xl p-8 shadow-lg border border-secondary-100"
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <div className="flex items-center mb-8">
+              <div className="p-3 bg-secondary-100 rounded-lg mr-4">
+                <FaTrophy className="text-secondary text-2xl" />
+              </div>
+              <div>
+                <h3 className="text-2xl font-bold text-gray-900">Professional Skills</h3>
+                <p className="text-sm text-gray-600">Soft skills & competencies</p>
+              </div>
+            </div>
+            <div className="space-y-1">
+              {skills.professional.map((skill, idx) => renderSkill(skill, skills.clinical.length + idx))}
+            </div>
+          </motion.div>
         </div>
 
-        {/* Professional Skills */}
-        <div className="fade-in fade-in-delay-2">
-          <div className="flex items-center mb-10">
-            <div className="icon-box mr-4">
-              <i className="fas fa-briefcase"></i>
-            </div>
-            <h3 className="text-3xl font-bold text-[var(--color-navy)]">Professional Competencies</h3>
+        {/* Additional Info */}
+        <motion.div
+          className="mt-16 grid md:grid-cols-3 gap-6"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          viewport={{ once: true }}
+        >
+          <div className="bg-gradient-to-br from-primary-50 to-primary-100 rounded-xl p-6 border border-primary-200 text-center">
+            <FaStethoscope className="text-primary text-4xl mx-auto mb-3" />
+            <h4 className="font-bold text-gray-900 mb-1">Patient Care</h4>
+            <p className="text-sm text-gray-700">DHA & Nepal licensed</p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {professionalSkills.map((skill, index) => (
-              <div key={index} className="glass-light card rounded-2xl p-5 text-center text-[var(--color-navy)] font-semibold text-sm md:text-base hover-glow">
-                <i className="fas fa-star text-amber-500 mr-2"></i>{skill}
-              </div>
-            ))}
+          <div className="bg-gradient-to-br from-secondary-50 to-secondary-100 rounded-xl p-6 border border-secondary-200 text-center">
+            <FaSyringe className="text-secondary text-4xl mx-auto mb-3" />
+            <h4 className="font-bold text-gray-900 mb-1">Clinical Excellence</h4>
+            <p className="text-sm text-gray-700">High-quality standards</p>
           </div>
-        </div>
+          <div className="bg-gradient-to-br from-accent-50 to-accent-100 rounded-xl p-6 border border-accent-200 text-center">
+            <FaHeartbeat className="text-accent text-4xl mx-auto mb-3" />
+            <h4 className="font-bold text-gray-900 mb-1">Compassion</h4>
+            <p className="text-sm text-gray-700">Patient-centered approach</p>
+          </div>
+        </motion.div>
       </div>
     </section>
   );
-}
+};
+
+export default Skills;
