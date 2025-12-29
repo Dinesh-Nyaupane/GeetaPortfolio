@@ -1,8 +1,22 @@
 import React from "react";
-import { FaBriefcase, FaMapMarkerAlt, FaClock, FaCheckCircle } from "react-icons/fa";
+import { FaDownload, FaBriefcase, FaMapMarkerAlt, FaClock, FaCheckCircle } from "react-icons/fa";
 import { experienceData } from "../data/experience";
 import { motion } from "framer-motion";
 
+const handleDownload = () => {
+  fetch("/resume.pdf")
+    .then(res => res.blob())
+    .then(blob => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "Gita_Banjade_Resume.pdf";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+    });
+};
 const Experience = () => {
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -134,6 +148,7 @@ const Experience = () => {
             className="px-8 py-3 bg-primary text-white rounded-lg font-semibold hover:bg-primary-700 transition-colors shadow-lg"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
+            onClick={handleDownload}
           >
             Download Full Resume
           </motion.button>

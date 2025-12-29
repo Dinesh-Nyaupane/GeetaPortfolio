@@ -1,8 +1,21 @@
 import React from "react";
 import { socials } from "../data/social";
-import { FaInstagram, FaFacebook, FaTiktok, FaWhatsapp, FaHeart } from "react-icons/fa";
+import { FaDownload, FaInstagram, FaFacebook, FaTiktok, FaWhatsapp, FaHeart } from "react-icons/fa";
 import Button from "./Button";
-
+const handleDownload = () => {
+  fetch("/resume.pdf")
+    .then(res => res.blob())
+    .then(blob => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "Gita_Banjade_Resume.pdf";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+    });
+};
 const Footer = () => {
   return (
     <footer className="bg-white border-t border-gray-200 text-gray-700 py-12 mt-16">
@@ -30,9 +43,13 @@ const Footer = () => {
           {/* Resume & Contact */}
           <div>
             <h4 className="font-semibold text-gray-800 mb-4">Get In Touch</h4>
-            <Button variant="primary" className="w-full mb-3 px-4 py-2 text-center">
-              Download Resume
-            </Button>
+            <Button
+  variant="primary"
+  className="px-8 py-3 text-lg flex items-center gap-2"
+  onClick={handleDownload}
+>
+  <FaDownload size={18} /> Download Resume
+</Button>
             <a 
               href={socials.whatsapp || "https://wa.me/"} 
               target="_blank" 
