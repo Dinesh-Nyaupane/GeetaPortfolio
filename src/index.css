@@ -1,0 +1,190 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=DM+Serif+Display:wght@400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: 'Poppins', sans-serif;
+}
+
+/* =========================
+   Global Theme Variables
+   ========================= */
+:root {
+  --color-primary: #1a1a2e;
+  --color-secondary: #16213e;
+  --color-accent: #e94560;
+  --color-accent-light: #ff6b8a;
+  --color-accent-dark: #d63447;
+  --color-text: #2d2d2d;
+  --color-text-light: #666666;
+  --color-bg: #fafafa;
+  --color-white: #ffffff;
+  --color-border: #e0e0e0;
+}
+
+/* =========================
+   Base Styles
+   ========================= */
+@layer base {
+  html {
+    font-family: 'Poppins', sans-serif;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%);
+    color: var(--color-text);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'DM Serif Display', serif;
+    font-weight: 400;
+    letter-spacing: -0.8px;
+    color: var(--color-primary);
+  }
+
+  h1 { @apply text-5xl md:text-6xl lg:text-7xl leading-tight; }
+  h2 { @apply text-4xl md:text-5xl lg:text-6xl leading-tight; }
+  h3 { @apply text-2xl md:text-3xl lg:text-4xl; }
+  h4 { @apply text-xl md:text-2xl; }
+  h5 { @apply text-lg md:text-xl; }
+
+  p { @apply text-base md:text-lg leading-relaxed; }
+  small { @apply text-sm md:text-base; }
+}
+
+/* =========================
+   Glassmorphism Components
+   ========================= */
+@layer components {
+  .glass {
+    @apply backdrop-blur-lg bg-white/80 border border-white/40 rounded-2xl;
+  }
+
+  .glass-dark {
+    @apply backdrop-blur-lg bg-black/5 border border-white/20 rounded-2xl;
+  }
+
+  .glass-card {
+    @apply glass p-8 md:p-10 shadow-xl transition-all duration-500;
+  }
+
+  .glass:hover {
+    @apply shadow-2xl bg-white/90;
+  }
+
+  .section {
+    @apply px-4 py-24 md:px-8 lg:px-16;
+  }
+
+  .section-title {
+    @apply text-4xl md:text-5xl lg:text-6xl font-bold text-var(--color-primary) mb-6;
+    letter-spacing: -1.5px;
+  }
+
+  .section-subtitle {
+    @apply text-lg md:text-xl text-var(--color-text-light) mb-12 max-w-2xl;
+  }
+
+  .btn-primary {
+    @apply px-8 py-4 rounded-xl text-white font-semibold text-base md:text-lg
+           bg-gradient-to-r from-var(--color-accent) to-var(--color-accent-light)
+           hover:shadow-2xl hover:shadow-pink-300/40
+           transition-all duration-300 shadow-lg
+           transform hover:-translate-y-1 active:translate-y-0
+           border border-white/20;
+  }
+
+  .btn-secondary {
+    @apply px-8 py-4 rounded-xl font-semibold text-base md:text-lg
+           bg-white border-2 border-var(--color-primary)
+           text-var(--color-primary) hover:bg-var(--color-primary) hover:text-white
+           hover:shadow-xl transition-all duration-300
+           transform hover:-translate-y-1;
+  }
+
+  .btn-outline {
+    @apply px-8 py-4 rounded-xl font-semibold text-base md:text-lg
+           border-2 border-var(--color-accent) text-var(--color-accent)
+           hover:bg-var(--color-accent)/10 hover:shadow-lg
+           transition-all duration-300;
+  }
+
+  .card {
+    @apply glass p-8 md:p-10 rounded-3xl shadow-lg transition-all duration-500;
+  }
+
+  .card:hover {
+    @apply shadow-2xl -translate-y-2;
+  }
+
+  .badge {
+    @apply inline-block px-5 py-2.5 rounded-full text-sm font-semibold
+           bg-var(--color-accent)/10 border border-var(--color-accent)/30
+           text-var(--color-accent) hover:bg-var(--color-accent)/20 transition-all;
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-var(--color-accent) to-var(--color-accent-light) bg-clip-text text-transparent;
+  }
+
+  .icon-box {
+    @apply w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-gradient-to-br from-var(--color-accent) to-var(--color-accent-light)
+           flex items-center justify-center text-white shadow-xl text-2xl;
+  }
+
+  .text-accent {
+    @apply text-var(--color-accent);
+  }
+
+  .border-accent {
+    @apply border-var(--color-accent);
+  }
+
+  .bg-accent {
+    @apply bg-var(--color-accent);
+  }
+}
+
+/* =========================
+   Reusable Utilities
+   ========================= */
+@layer utilities {
+  .fade-in {
+    animation: fadeIn 0.8s ease-in forwards;
+    opacity: 0;
+  }
+
+  .fade-in-delay-1 { animation-delay: 0.1s; }
+  .fade-in-delay-2 { animation-delay: 0.2s; }
+  .fade-in-delay-3 { animation-delay: 0.3s; }
+  .fade-in-delay-4 { animation-delay: 0.4s; }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .smooth-transition {
+    @apply transition-all duration-500 ease-out;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .group:hover .group-hover\:text-accent {
+    @apply text-var(--color-accent);
+  }
+}
+
