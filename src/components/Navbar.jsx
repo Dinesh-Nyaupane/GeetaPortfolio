@@ -1,65 +1,126 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { NavLink } from "react-router-dom";
+import { FaBars, FaTimes } from "react-icons/fa";
+import Button from "./Button";
 
-export default function Navbar() {
+const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
-  const links = [
-    { name: "Home", path: "/" },
-    { name: "About", path: "/about" },
-    { name: "Skills", path: "/skills" },
-    { name: "Experience", path: "/experience" },
-    { name: "Education", path: "/education" },
-    { name: "Certifications", path: "/certifications" },
-    { name: "Contact", path: "/contact" },
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 10);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const navLinks = [
+    { name: "Home", to: "/" },
+    { name: "About", to: "/about" },
+    { name: "Skills", to: "/skills" },
+    { name: "Experience", to: "/experience" },
+    { name: "Education", to: "/education" },
+    { name: "Certifications", to: "/certifications" },
+    { name: "Blog", to: "/blog" },
+    { name: "Contact", to: "/contact" },
   ];
 
   return (
-    <nav className="bg-white/95 backdrop-blur-lg text-black fixed w-full z-50 border-b border-gray-200 shadow-lg">
-      <div className="max-w-7xl mx-auto flex justify-between items-center px-6 md:px-8 py-5">
-        <div className="text-3xl md:text-4xl font-bold gradient-text font-serif">
-          Gita
-        </div>
+    <nav className={`fixed w-full z-50 transition-all duration-300 ${
+      scrolled 
+        ? 'bg-white shadow-lg' 
+        : 'bg-white bg-opacity-95 shadow-sm'
+    }`}>
+      <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+        
+        {/* Logo / Name */}
+        <NavLink 
+          to="/" 
+          className="text-2xl font-bold text-primary hover:text-primary-700 transition"
+        >
+          Gita Banjade
+        </NavLink>
 
-        {/* Desktop Menu */}
-        <ul className="hidden md:flex space-x-10">
-          {links.map((link) => (
+        {/* Desktop Links */}
+        <ul className="hidden md:flex space-x-1 items-center">
+          {navLinks.map((link) => (
             <li key={link.name}>
-              <Link
-                to={link.path}
-                className="text-gray-700 hover:text-accent transition-colors duration-300 font-medium text-sm md:text-base relative group"
+              <NavLink
+                to={link.to}
+                className={({ isActive }) =>
+                  `px-3 py-2 rounded-lg transition-all duration-200 ${
+                    isActive 
+                      ? 'text-primary font-semibold bg-primary-50' 
+                      : 'text-gray-700 hover:text-primary hover:bg-gray-50'
+                  }`
+                }
               >
                 {link.name}
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-accent group-hover:w-full transition-all duration-300 rounded-full"></span>
-              </Link>
+              </NavLink>
             </li>
           ))}
+          {/* Download Resume Button */}
+          {/* <li className="ml-4">
+            <Button 
+              as="a" 
+              variant="primary" 
+              className="px-6 py-2"
+              onClick={() => {
+                // TODO: Add actual resume download functionality
+              }}
+            >
+              Resume
+            </Button>
+          </li> */}
         </ul>
 
-        {/* Mobile Menu Button */}
-        <div className="md:hidden">
-          <button onClick={() => setIsOpen(!isOpen)} className="text-2xl text-gray-700 hover:text-accent transition-colors duration-300">
-            <i className="fas fa-bars"></i>
+        {/* Mobile Menu Toggle */}
+        <div className="md:hidden flex items-center">
+          <button 
+            onClick={() => setIsOpen(!isOpen)}
+            className="text-gray-800 hover:text-primary transition-colors"
+          >
+            {isOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
           </button>
         </div>
       </div>
 
       {/* Mobile Menu */}
       {isOpen && (
-        <ul className="md:hidden bg-white/98 backdrop-blur-lg px-6 pb-6 space-y-4 border-t border-gray-200">
-          {links.map((link) => (
-            <li key={link.name}>
-              <Link
-                to={link.path}
-                onClick={() => setIsOpen(false)}
-                className="block py-3 hover:text-accent transition-colors duration-300 font-medium text-gray-700 text-base"
+        <div className="md:hidden bg-white shadow-lg border-t border-gray-100 py-4 px-6">
+          <ul className="flex flex-col space-y-2">
+            {navLinks.map((link) => (
+              <li key={link.name}>
+                <NavLink
+                  to={link.to}
+                  onClick={() => setIsOpen(false)}
+                  className={({ isActive }) =>
+                    `block px-4 py-2 rounded-lg transition-colors ${
+                      isActive 
+                        ? 'text-primary font-semibold bg-primary-50' 
+                        : 'text-gray-700 hover:text-primary hover:bg-gray-50'
+                    }`
+                  }
+                >
+                  {link.name}
+                </NavLink>
+              </li>
+            ))}
+            <li className="pt-2 border-t border-gray-200">
+              <Button 
+                as="a" 
+                variant="primary" 
+                className="w-full px-4 py-2 text-center"
               >
-                {link.name}
-              </Link>
+                Download Resume
+              </Button>
             </li>
-          ))}
-        </ul>
+          </ul>
+        </div>
       )}
     </nav>
   );
-}
+};
+
+export default Navbar;
